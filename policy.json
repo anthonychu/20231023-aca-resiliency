@@ -1,5 +1,4 @@
 {
-    "parent": "flaky-api",
     "properties": {
         "httpRetryPolicy": {
             "maxRetries": 5,
