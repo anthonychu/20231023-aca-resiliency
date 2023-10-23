@@ -1,0 +1,66 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API</title>
+    <style>
+        .failed {
+            color: #ff3333;
+        }
+        .success {
+            color: #009900;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <input type="checkbox" id="enable-faults"> Inject faults
+    </div>
+    <hr>
+    <div id="logs">
+
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        socket.on('connect', () => {
+            console.log('connected');
+        });
+
+        socket.on('disconnect', () => {
+            console.log('disconnected');
+        });
+
+        socket.on('request', (req) => {
+            console.log(req);
+            const log = document.createElement('div');
+            const statusClass = req.status === 'Failed' ? 'failed' : 'success';
+            log.innerHTML = `<div><b class='${statusClass}'>${req.status}</b> - ${req.method} - ${req.path}</div>`;
+            document.getElementById('logs').appendChild(log);
+        });
+
+        document.getElementById('enable-faults').addEventListener('change', async (e) => {
+            fetch('/status', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    injectFaults: e.target.checked
+                }),
+            });
+        });
+
+        (async function main() {
+            const res = await fetch('/status');
+            const data = await res.json();
+            document.getElementById('enable-faults').checked = data.injectFaults;
+        })();
+    </script>
+</body>
+
+</html>

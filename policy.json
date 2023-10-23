@@ -1,0 +1,17 @@
+{
+    "parent": "flaky-api",
+    "properties": {
+        "httpRetryPolicy": {
+            "maxRetries": 5,
+            "retryBackoff": {
+                "initialDelayInMilliseconds": 100,
+                "maxIntervalInMilliseconds": 10000
+            },
+            "matches": {
+                "errors": [
+                    "5xx"
+                ]
+            }
+        }
+    }
+}
