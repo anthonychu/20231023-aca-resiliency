@@ -5,7 +5,7 @@ const fastifyIO = require("fastify-socket.io");
 server.register(fastifyIO);
 
 server.register(require('@fastify/static'), {
-  root: path.join(__dirname, 'public')
+  root: path.join(__dirname, 'public'),
 });  
 
 const status = {
